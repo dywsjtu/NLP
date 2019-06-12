@@ -104,6 +104,7 @@ def negSamplingLossAndGradient(
 
     ### YOUR CODE HERE
 
+    
     ### Please use your implementation of sigmoid in here.
 
 
