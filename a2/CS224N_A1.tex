@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{CS224N_A1}
+\author{Yinwei Dai}
+\date{June 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Question 1}
+
+\textbf{(a)}\\
+the cross entropy loss between the true (dicrete) probability p and another distribution q is $-\sum_i p_ilog(q_i)$\\
+we can know that\\
+$$
+y_w = 0 w != o
+$$
+$$
+y_w = 1 w = 0 
+$$
+therefore 
+$$
+-\sum_{w = 1}^{V} y_w log(\hat{y_w}) = y_o log(\hat{y_0}) = log(\hat{y_0})
+$$
+\\
+\textbf{(b)}\\ 
+$$
+\frac{\partial J_{naive_softmax}(v_c, o, U)}{\partial v_c} = -\frac{\partial log(P(O = 0 | C = c))}{\partial v_c} = 
+-\frac{u_0^{T}v_c}{\partial v_c} + \frac{log(\sum_{w \in Vocab} exp(u_w^T v_c))}{\partial v_c} = 
+$$
+$$
+-u_o + \sum_{w = 1}^{V} \frac{exp(u_w^T v_c)}{ \sum_{w = 1}^{V}exp(u_w^T v_c) } u_w = -u_0 +  \sum_{w = 1}^{V}log(P(O = w | C = c) u_w = U^T(\hat{y} - y)
+$$
+\\
+\textbf{(c)}\\
+$$
+\frac{\partial J_{naive_softmax}(v_c, o, U)}{\partial u_w} = -\frac{u_0^{T}v_c}{\partial u_w} + \frac{log(\sum_{w \in Vocab} exp(u_w^T v_c))}{\partial u_w}
+$$
+when w = 0, we can get 
+$$
+\frac{\partial J_{naive_softmax}(v_c, o, U)}{\partial u_w} = -v_c +  \frac{exp(u_o^T v_c)}{ \sum_{w = 1}^{V}exp(u_w^T v_c) } v_c = (P(O = w | C = c) - 1)v_c 
+$$
+when w $!=$ 0, we have 
+$$
+\frac{\partial J_{naive_softmax}(v_c, o, U)}{\partial u_w} =  \frac{exp(u_w^T v_c)}{ \sum_{m = 1}^{V}exp(u_m^T v_c) } v_c = (P(O = w | C = c) v_c
+$$
+Above all, we can draw a conclusion
+$$
+\frac{\partial J_{naive_softmax}(v_c, o, U)}{\partial u_w} = (\hat{y} - y)^T v_c
+$$
+\\
+\textbf{(d)}\\
+\textbf{(e)}\\
+\textbf{(f)}\\
+\textbf{(i)}\\
+\textbf{(ii)}\\
+\textbf{(iii)}\\
+
+\section{Question 2}
+
+\textbf{(a)}\\
+\textbf{(b)}\\
+\textbf{(c)}\\
+\end{document}
