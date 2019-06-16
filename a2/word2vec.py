@@ -17,9 +17,8 @@ def sigmoid(x):
     """
 
     ### YOUR CODE HERE
-    s = 1 / (1 + np.exp(-x))
+    s = 1.0 / (1.0 + np.exp(-x))
     ### END YOUR CODE
-
     return s
 
 
@@ -53,7 +52,13 @@ def naiveSoftmaxLossAndGradient(
     """
 
     ### YOUR CODE HERE
+    y_hat = softmax(np.dot(outsideVectors, centerWordVec))
+    delta = y_hat.copy()
+    delta[outsideWordIdx] -= 1
 
+    loss = -np.log(y_hat)[outsideWordIdx]
+    gradCenterVec = np.dot(outsideVectors.T, delta)
+    gradOutsideVecs = np.outer(delta, centerWordVec)
     ### Please use the provided softmax function (imported earlier in this file)
     ### This numerically stable implementation helps you avoid issues pertaining
     ### to integer overflow. 
@@ -104,10 +109,25 @@ def negSamplingLossAndGradient(
 
     ### YOUR CODE HERE
 
-    
+    gradCenterVec = np.zeros(centerWordVec.shape)
+    gradOutsideVecs = np.zeros(outsideVectors.shape)
+    loss = 0.0
+
     ### Please use your implementation of sigmoid in here.
 
+    u_o = outsideVectors[outsideWordIdx]
+    z = sigmoid(np.dot(u_o, centerWordVec))
+    loss = -np.log(z)
+    gradCenterVec += (z - 1) * u_o
+    gradOutsideVecs[outsideWordIdx] = centerWordVec * (z - 1)
 
+    for i in range(K):
+        negIndex = indices[i + 1]
+        u_k = outsideVectors[negIndex]
+        z = sigmoid(-np.dot(u_k, centerWordVec))
+        loss -= np.log(z)
+        gradCenterVec += (1 - z) * u_k
+        gradOutsideVecs[negIndex] += centerWordVec * (1 - z)
     ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
@@ -149,7 +169,16 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
     gradOutsideVectors = np.zeros(outsideVectors.shape)
 
     ### YOUR CODE HERE
-
+    center_id = word2Ind[currentCenterWord]
+    centerWordVec = centerWordVectors[center_id]
+    for word in outsideWords:
+        outside_id = word2Ind[word]
+        loss_mini, gradCenter_mini, gradOutside_mini= \
+        word2vecLossAndGradient(centerWordVec=centerWordVec,
+            outsideWordIdx=outside_id,outsideVectors=outsideVectors,dataset=dataset)
+        loss += loss_mini
+        gradCenterVecs[center_id] += gradCenter_mini
+        gradOutsideVectors += gradOutside_mini
     ### END YOUR CODE
 
     return loss, gradCenterVecs, gradOutsideVectors
