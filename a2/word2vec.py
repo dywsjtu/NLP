@@ -288,5 +288,7 @@ Gradient wrt Center Vectors (dJ/dV):
  [-0.80620296  0.36994417  2.81407799]]
     """)
 
+
+
 if __name__ == "__main__":
     test_word2vec()
