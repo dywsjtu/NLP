@@ -30,8 +30,9 @@ class PartialParse(object):
         ###
         ### Note: The root token should be represented with the string "ROOT"
         ###
-
-
+        self.stack = ['ROOT']
+        self.buffer = sentence
+        self.dependencies = []
         ### END YOUR CODE
 
 
